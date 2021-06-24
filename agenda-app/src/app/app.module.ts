@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http'
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -23,6 +24,7 @@ import { ContatoService } from './contato.service';
     MatButtonModule,
     MatToolbarModule,
     MatInputModule,
+    HttpClientModule,
     BrowserAnimationsModule
   ],
   providers: [
