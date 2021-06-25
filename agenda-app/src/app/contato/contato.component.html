@@ -4,11 +4,26 @@
         <mat-label>Nome: </mat-label>
         <input formControlName="nome" matInput placeholder="Digite seu nome"/>
     </mat-form-field>
+    <br/>
+    <div *ngIf="formulario.controls.nome.errors">
+        <div *ngIf="formulario.controls.nome.errors.required">
+            Campo nome é obrigatório.
+        </div>
+    </div>
 
     <mat-form-field class="full-width">
         <mat-label>E-mail: </mat-label>
         <input formControlName="email" matInput placeholder="Digite seu e-mail"/>
     </mat-form-field>
+    <br/>
+    <div *ngIf="formulario.controls.email.errors">
+        <div *ngIf="formulario.controls.email.errors.required">
+            Campo e-mail é obrigatório.
+        </div>
+        <div *ngIf="formulario.controls.email.errors.email">
+            E-mail inválido.
+        </div>
+    </div>
 
-    <button mat-button color="primary">Adicionar</button>
+    <button [disabled]="!formulario.valid" mat-button color="primary">Adicionar</button>
 </form>
