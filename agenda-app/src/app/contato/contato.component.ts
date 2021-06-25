@@ -13,6 +13,7 @@ export class ContatoComponent implements OnInit {
 
   formulario: FormGroup;
   contatos: Contato[] = [];
+  colunas: string[] =  ['id', 'nome', 'email', 'favorito'];
 
   constructor(
     private contatoService: ContatoService,
@@ -31,7 +32,6 @@ export class ContatoComponent implements OnInit {
     const contato: Contato = new Contato(formValues.nome, formValues.email);
     this.contatoService.save(contato).subscribe(resposta => {
       this.contatos.push(resposta);
-      console.log(this.contatos)
     });
   }
 
