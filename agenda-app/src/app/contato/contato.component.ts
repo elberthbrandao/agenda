@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 export class ContatoComponent implements OnInit {
 
   formulario: FormGroup;
+  contatos: Contato[] = [];
 
   constructor(
     private contatoService: ContatoService,
@@ -26,10 +27,12 @@ export class ContatoComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.formulario.value)
-    // this.contatoService.save(c).subscribe(resposta => {
-    //   console.log(resposta)
-    // });
+    const formValues = this.formulario.value;
+    const contato: Contato = new Contato(formValues.nome, formValues.email);
+    this.contatoService.save(contato).subscribe(resposta => {
+      this.contatos.push(resposta);
+      console.log(this.contatos)
+    });
   }
 
 }
