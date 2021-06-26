@@ -3,6 +3,7 @@ import { ContatoService } from '../contato.service';
 import { Contato } from './contato';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { fromEventPattern } from 'rxjs';
 
 @Component({
   selector: 'app-contato',
@@ -13,7 +14,7 @@ export class ContatoComponent implements OnInit {
 
   formulario: FormGroup;
   contatos: Contato[] = [];
-  colunas: string[] = ['id', 'nome', 'email', 'favorito'];
+  colunas: string[] = ['foto', 'id', 'nome', 'email', 'favorito'];
 
   constructor(
     private contatoService: ContatoService,
@@ -51,6 +52,17 @@ export class ContatoComponent implements OnInit {
       let lista: Contato[] = [...this.contatos, resposta];
       this.contatos = lista;
     });
+  }
+
+  uploadFoto(event, contato){
+    const files = event.target.files;
+    if(files){
+      const foto = files[0];
+      const formData: FormData = new FormData();
+      formData.append("foto", foto)
+
+      this.contatoService.upload(contato, formData).subscribe(response => this.listarContatos());
+    }
   }
 
 }
