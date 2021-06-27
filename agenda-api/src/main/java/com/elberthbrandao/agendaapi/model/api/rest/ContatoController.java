@@ -2,12 +2,13 @@ package com.elberthbrandao.agendaapi.model.api.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.Part;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,8 +37,11 @@ public class ContatoController {
 	private final ContatoRepository repository;
 
 	@GetMapping
-	public List<Contato> list() {
-		return repository.findAll();
+	public Page<Contato> list(
+			@RequestParam(value = "page", defaultValue = "0") Integer pagina,
+			@RequestParam(value = "size", defaultValue = "10") Integer tamanhoPagina) {
+		PageRequest pageRequest = PageRequest.of(pagina, tamanhoPagina);
+		return repository.findAll(pageRequest);
 	}
 
 	@PatchMapping("{id}/favorito")
