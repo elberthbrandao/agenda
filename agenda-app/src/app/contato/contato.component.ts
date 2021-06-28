@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 
 import { ContatoDetalheComponent } from '../contato-detalhe/contato-detalhe.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-contato',
@@ -18,6 +19,11 @@ export class ContatoComponent implements OnInit {
   contatos: Contato[] = [];
   colunas: string[] = ['foto', 'id', 'nome', 'email', 'favorito'];
 
+  totalElementos = 0;
+  pagina = 0;
+  tamanho = 10;
+  pageSizeOptions: number[] = [10];
+
   constructor(
     private contatoService: ContatoService,
     private fb: FormBuilder,
@@ -26,7 +32,7 @@ export class ContatoComponent implements OnInit {
 
   ngOnInit(): void {
     this.montarFormulario();
-    this.listarContatos();
+    this.listarContatos(this.pagina, this.tamanho);
   }
 
   montarFormulario() {
@@ -36,9 +42,11 @@ export class ContatoComponent implements OnInit {
     });
   }
 
-  listarContatos() {
-    this.contatoService.list().subscribe(resposta => {
-      this.contatos = resposta;
+  listarContatos(pagina = 0, tamanho = 10) {
+    this.contatoService.list(pagina, tamanho).subscribe(resposta => {
+      this.contatos = resposta.content;
+      this.totalElementos = resposta.totalElements;
+      this.pagina = resposta.number;
     })
   }
 
@@ -75,6 +83,11 @@ export class ContatoComponent implements OnInit {
       height: '450px',
       data: contato
     });
+  }
+
+  paginar(event: PageEvent){
+    this.pagina = event.pageIndex;
+    this.listarContatos(this.pagina, this.tamanho);
   }
 
 }
